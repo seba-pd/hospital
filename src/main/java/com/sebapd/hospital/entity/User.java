@@ -1,6 +1,8 @@
 package com.sebapd.hospital.entity;
 
+import com.sebapd.hospital.security.Authority;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -8,27 +10,34 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-
+@Table(name = "_user")
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
+@SuperBuilder
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Long id;
+    @Column(nullable = false)
     private String username;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String phone;
-    private int age;
-    private boolean enabled;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "users_roles",
-    joinColumns = @JoinColumn(name = "user_id"),
-    inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles = new HashSet<>();
+    @Column(nullable = false)
+    private String email;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> roles = new HashSet<>();
+
+    public void addRole (Authority authority){
+        roles.add(authority.toString());
+    }
 
     @Override
     public boolean equals(Object o) {

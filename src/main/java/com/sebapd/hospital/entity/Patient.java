@@ -1,6 +1,7 @@
 package com.sebapd.hospital.entity;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class Patient extends User{
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)

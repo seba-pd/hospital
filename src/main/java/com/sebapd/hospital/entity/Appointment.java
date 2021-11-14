@@ -16,13 +16,15 @@ public class Appointment {
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private LocalDateTime appointmentDate;
-    @ManyToOne
-    @JoinColumn(name = "patient_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "patient_id", nullable = false)
     private Patient patient;
-    @ManyToOne
-    @JoinColumn(name = "doctor_id")
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
     @Override

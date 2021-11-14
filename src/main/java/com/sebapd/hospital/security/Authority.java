@@ -3,5 +3,5 @@ package com.sebapd.hospital.security;
 public enum Authority {
     ADMIN,
     DOCTOR,
-    USER
+    PATIENT
 }

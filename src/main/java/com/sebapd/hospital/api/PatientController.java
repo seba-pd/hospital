@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/patient")
+
+@RestController
+@RequestMapping("/patient")
 public class PatientController {
 
     private final PatientService patientService;
@@ -19,5 +21,4 @@ public class PatientController {
     public ResponseEntity<Patient> addPatient(@RequestBody Patient patient){
         return new ResponseEntity<>(patientService.addPatient(patient),HttpStatus.CREATED);
     }
-
 }

@@ -1,0 +1,49 @@
+package com.sebapd.hospital.service;
+
+import com.sebapd.hospital.entity.Doctor;
+import com.sebapd.hospital.entity.Patient;
+import com.sebapd.hospital.exception.DoctorNotFoundException;
+import com.sebapd.hospital.exception.UsernameIsNotFreeException;
+import com.sebapd.hospital.repository.DoctorRepository;
+import com.sebapd.hospital.security.Authority;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Service
+@Transactional
+public class DoctorService {
+
+    private final DoctorRepository doctorRepository;
+
+    public DoctorService(DoctorRepository doctorRepository) {
+        this.doctorRepository = doctorRepository;
+    }
+
+    public Doctor addDoctor(Doctor doctor){
+        doctor.addRole(Authority.DOCTOR);
+        if(doctorRepository.getDoctorByUsername(doctor.getUsername()).isPresent()) throw new UsernameIsNotFreeException("Username is not free!");
+        return doctorRepository.save(doctor);
+    }
+
+    public List<Doctor> getAllDoctor(){
+        return doctorRepository.findAll();
+    }
+
+    public Doctor getDoctorByUsername(String username){
+        return doctorRepository.getDoctorByUsername(username)
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor not found!"));
+    }
+
+    public void deleteDoctorByUsername(String username){
+        doctorRepository.deleteDoctorByUsername(username);
+    }
+
+    public List<Patient> getPatientsOfDoctor(String username){
+        var doctor = doctorRepository.getDoctorByUsername(username)
+                .orElseThrow(() -> new DoctorNotFoundException("Doctor not found!"));
+
+        return doctor.getPatients();
+    }
+}
