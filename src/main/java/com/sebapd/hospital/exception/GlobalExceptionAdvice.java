@@ -14,12 +14,17 @@ public class GlobalExceptionAdvice {
     }
 
     @ExceptionHandler(value = PatientNotFoundException.class)
-    public ResponseEntity<?> PatientNotFoundExceptionHandler(PatientNotFoundException patientNotFoundException){
+    public ResponseEntity<?> patientNotFoundExceptionHandler(PatientNotFoundException patientNotFoundException){
         return new ResponseEntity<>(patientNotFoundException.getMessage(),HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(value = UsernameIsNotFreeException.class)
     public ResponseEntity<?> usernameIsNotFreeExceptionHandler(UsernameIsNotFreeException usernameIsNotFreeException){
         return new ResponseEntity<>(usernameIsNotFreeException.getMessage(),HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = AppointmentNotFoundException.class)
+    public ResponseEntity<?> appointmentNotFoundExceptionHandler(AppointmentNotFoundException appointmentNotFoundException){
+        return new ResponseEntity<>(appointmentNotFoundException.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

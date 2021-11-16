@@ -1,7 +1,6 @@
 package com.sebapd.hospital.entity;
 
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -19,7 +18,7 @@ public class Patient extends User{
     @JoinColumn(name = "doctor_id")
     private Doctor doctor;
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
-    private List<Appointment> appointment;
+    private List<Appointment> appointments;
 
     @Override
     public boolean equals(Object o) {

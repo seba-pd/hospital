@@ -45,6 +45,10 @@ public class AdminController {
     public ResponseEntity<List<Appointment>> getAllAppointments(){
         return new ResponseEntity<>(appointmentService.getAllAppointments(), HttpStatus.OK);
     }
+    @GetMapping("/appointment/{id}")
+    public ResponseEntity<Appointment> getAppointment(@PathVariable Long id){
+        return new ResponseEntity<>(appointmentService.getAppointmentById(id), HttpStatus.OK);
+    }
 
     @GetMapping("/doctors/all")
     public ResponseEntity<List<Doctor>> getAllDoctors(){

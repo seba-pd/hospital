@@ -43,7 +43,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .mvcMatchers("/admin/**").hasAuthority("ADMIN")
                 .mvcMatchers("/doctor/**").hasAnyAuthority("DOCTOR","ADMIN")
-                .mvcMatchers("/patient/**").hasAnyAuthority("PATIENT","ADMIN")
+                .mvcMatchers("/patient/**").hasAnyAuthority("PATIENT")
                 .anyRequest().authenticated()
                 .and()
                 .logout();
