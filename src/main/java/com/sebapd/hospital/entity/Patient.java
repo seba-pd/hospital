@@ -12,12 +12,13 @@ import java.util.Objects;
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class Patient extends User{
+public class Patient extends User {
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "doctor_id")
-    private Doctor doctor;
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
+    private String address;
+    private int weight;
+    private int height;
+    @OneToMany(mappedBy = "patient")
+    @ToString.Exclude
     private List<Appointment> appointments;
 
     @Override

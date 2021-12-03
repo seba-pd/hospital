@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RestController
@@ -26,6 +27,8 @@ public class AdminController {
         this.doctorService = doctorService;
     }
 
+
+
     @GetMapping("/patients/all")
     public ResponseEntity<List<Patient>> getAllPatients(){
         return new ResponseEntity<>(patientService.getAllPatient(), HttpStatus.OK);
@@ -41,13 +44,24 @@ public class AdminController {
         patientService.deletePatientByUsername(username);
     }
 
+    @PutMapping("/patients/update/{username}")
+    public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient,@PathVariable String username){
+        return new ResponseEntity<>((patientService.updatePatient(patient,username)), HttpStatus.OK);
+    }
+
     @GetMapping("/appointments")
     public ResponseEntity<List<Appointment>> getAllAppointments(){
         return new ResponseEntity<>(appointmentService.getAllAppointments(), HttpStatus.OK);
     }
+
     @GetMapping("/appointment/{id}")
     public ResponseEntity<Appointment> getAppointment(@PathVariable Long id){
         return new ResponseEntity<>(appointmentService.getAppointmentById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/patients/appointments/{username}")
+    public ResponseEntity<List<Appointment>> getAppointmentByPatient(@PathVariable String username){
+        return new ResponseEntity<>(appointmentService.getAppointmentsByPatient(username),HttpStatus.OK);
     }
 
     @GetMapping("/doctors/all")

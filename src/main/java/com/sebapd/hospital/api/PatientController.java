@@ -8,8 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
-
 
 @RestController
 @RequestMapping("/patient")
@@ -28,8 +28,13 @@ public class PatientController {
         return new ResponseEntity<>(patientService.addPatient(patient),HttpStatus.CREATED);
     }
 
-    @PostMapping("/appointment/{username}")
-    public ResponseEntity<List<Appointment>> getAppointmentByPatient(@PathVariable String username){
-        return new ResponseEntity<>(appointmentService.getAppointmentsByPatient(username),HttpStatus.OK);
+    @GetMapping("/appointments")
+    public ResponseEntity<List<Appointment>> getAppointmentByPatient(Principal principal){
+        return new ResponseEntity<>(appointmentService.getAppointmentsByPatient(principal.getName()),HttpStatus.OK);
+    }
+
+    @PutMapping("/update")
+    public ResponseEntity<Patient> updatePatient(@RequestBody Patient patient, Principal principal){
+        return new ResponseEntity<>((patientService.updatePatient(patient, principal.getName())), HttpStatus.OK);
     }
 }

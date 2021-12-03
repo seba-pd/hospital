@@ -21,22 +21,32 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
-    public List<Patient> getAllPatient(){
+    public List<Patient> getAllPatient() {
         return patientRepository.findAll();
     }
 
-    public Patient getPatientByUsername(String username){
+    public Patient getPatientByUsername(String username) {
         return patientRepository.findByUsername(username)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found!"));
     }
 
-    public Patient addPatient(Patient patient){
+    public Patient addPatient(Patient patient) {
+        if (patientRepository.findByUsername(patient.getUsername()).isPresent())
+            throw new UsernameIsNotFreeException("Username is not free!");
         patient.setRoles(Set.of(Authority.PATIENT.name()));
-        if(patientRepository.findByUsername(patient.getUsername()).isPresent()) throw new UsernameIsNotFreeException("Username is not free!");
         return patientRepository.save(patient);
     }
 
-    public void deletePatientByUsername(String username){
+    public Patient updatePatient(Patient patient, String username) {
+        var updateDoctor = patientRepository.findByUsername(username);
+        if (updateDoctor.isEmpty())
+            throw new PatientNotFoundException("Patient nor found!");
+        else
+            patient.setId(updateDoctor.get().getId());
+        return patientRepository.save(patient);
+    }
+
+    public void deletePatientByUsername(String username) {
         patientRepository.deleteByUsername(username);
     }
 }

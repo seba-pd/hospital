@@ -2,7 +2,6 @@ package com.sebapd.hospital.entity;
 
 import com.sebapd.hospital.security.Authority;
 import lombok.*;
-import lombok.experimental.SuperBuilder;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -17,7 +16,6 @@ import java.util.Set;
 @Setter
 @ToString
 @RequiredArgsConstructor
-@SuperBuilder
 public class User {
 
     @Id
@@ -32,10 +30,12 @@ public class User {
     private String phone;
     @Column(nullable = false)
     private String email;
-    @ElementCollection(fetch = FetchType.EAGER)
+    private int age;
+    private String gender;
+    @ElementCollection
     private Set<String> roles = new HashSet<>();
 
-    public void addRole (Authority authority){
+    public void addRole(Authority authority) {
         roles.add(authority.toString());
     }
 

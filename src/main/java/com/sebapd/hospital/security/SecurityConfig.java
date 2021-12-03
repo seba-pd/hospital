@@ -14,22 +14,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
+    public UserDetailsService userDetailsService() {
         return new UserDetailsServiceImpl();
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider(){
+    public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(passwordEncoder());
         provider.setUserDetailsService(userDetailsService());
         return provider;
-        }
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -42,8 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .mvcMatchers("/admin/**").hasAuthority("ADMIN")
-                .mvcMatchers("/doctor/**").hasAnyAuthority("DOCTOR","ADMIN")
-                .mvcMatchers("/patient/**").hasAnyAuthority("PATIENT")
+                .mvcMatchers("/doctor/**").hasAnyAuthority("DOCTOR", "ADMIN")
+                .mvcMatchers("/patient/**").hasAuthority("PATIENT")
                 .anyRequest().authenticated()
                 .and()
                 .logout();

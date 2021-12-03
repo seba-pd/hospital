@@ -18,9 +18,10 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class Doctor extends User {
 
-    @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<Patient> patients;
-    @OneToMany(mappedBy = "doctor", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private String specialization;
+    private int experience;
+    @OneToMany(mappedBy = "doctor")
+    @ToString.Exclude
     private List<Appointment> appointments;
 
     @Override

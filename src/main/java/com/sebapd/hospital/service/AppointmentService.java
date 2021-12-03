@@ -26,32 +26,41 @@ public class AppointmentService {
         this.patientRepository = patientRepository;
     }
 
-    public List<Appointment> getAllAppointments(){
+    public List<Appointment> getAllAppointments() {
         return appointmentRepository.findAll();
     }
 
-    public Appointment getAppointmentById(Long id){
+    public Appointment getAppointmentById(Long id) {
         return appointmentRepository.findById(id).
-                orElseThrow(() ->new AppointmentNotFoundException("Appointment not found!"));
+                orElseThrow(() -> new AppointmentNotFoundException("Appointment not found!"));
     }
 
-    public List<Appointment> getAppointmentsByPatient(String username){
+    public List<Appointment> getAppointmentsByPatient(String username) {
         var patient = patientRepository.findByUsername(username)
                 .orElseThrow(() -> new PatientNotFoundException("Patient not found!"));
         return patient.getAppointments();
     }
 
-    public List<Appointment> getAppointmentsByDoctor(String username){
-        var doctor = doctorRepository.getDoctorByUsername(username)
+    public List<Appointment> getAppointmentsByDoctor(String username) {
+        var doctor = doctorRepository.findDoctorByUsername(username)
                 .orElseThrow(() -> new DoctorNotFoundException("Doctor not found!"));
         return doctor.getAppointments();
     }
 
-    public Appointment addAppointment(Appointment appointment){
+    public Appointment updateAppointment(Appointment appointment, Long id) {
+        var updatingAppointment = appointmentRepository.findById(id);
+        if (updatingAppointment.isEmpty())
+            throw new AppointmentNotFoundException("Appointment not found");
+        else
+            appointment.setId(id);
         return appointmentRepository.save(appointment);
     }
 
-    public void deleteAppointment(Long id){
+    public Appointment addAppointment(Appointment appointment) {
+        return appointmentRepository.save(appointment);
+    }
+
+    public void deleteAppointment(Long id) {
         appointmentRepository.deleteById(id);
     }
 }

@@ -7,6 +7,7 @@ import com.sebapd.hospital.service.AppointmentService;
 import com.sebapd.hospital.service.DoctorService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -25,22 +26,23 @@ public class DoctorController {
     }
 
     @GetMapping("/appointments")
-    public ResponseEntity<List<Appointment>> getDoctorsAppointments(Principal principal){
+    public ResponseEntity<List<Appointment>> getDoctorsAppointments(Principal principal) {
         return new ResponseEntity<>(appointmentService.getAppointmentsByDoctor(principal.getName()), HttpStatus.OK);
     }
 
     @PostMapping("/add_appointment")
-    public ResponseEntity<Appointment> addAppointment(@RequestBody Appointment appointment){
-        return new ResponseEntity<>(appointmentService.addAppointment(appointment),HttpStatus.CREATED);
+    public ResponseEntity<Appointment> addAppointment(@RequestBody Appointment appointment) {
+        return new ResponseEntity<>(appointmentService.addAppointment(appointment), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete_appointment/{id}")
-    public void deleteAppointment(@PathVariable Long id){
+    public void deleteAppointment(@PathVariable Long id) {
         appointmentService.deleteAppointment(id);
     }
 
-    @GetMapping("/patients")
-    public ResponseEntity<List<Patient>> getPatientsOfDoctor(Principal principal){
-        return new ResponseEntity<>(doctorService.getPatientsOfDoctor(principal.getName()), HttpStatus.OK);
+    @PutMapping("/update")
+    public ResponseEntity<Doctor> updateDoctor(@RequestBody Doctor doctor, Principal principal){
+        return new ResponseEntity<>(doctorService.updateDoctor(doctor,principal.getName()), HttpStatus.OK);
     }
+
 }
